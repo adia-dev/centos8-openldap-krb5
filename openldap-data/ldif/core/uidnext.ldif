@@ -1,0 +1,16 @@
+dn: cn=schema,cn=config
+changetype: modify
+add: olcAttributetypes
+olcAttributetypes: ( 1.3.6.1.4.1.19173.2.2.2.8
+  NAME 'uidNext'
+  DESC 'Attribute for tracking the next uidNumber'
+  EQUALITY integerMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+-
+add: olcObjectClasses
+olcObjectClasses: ( 1.3.6.1.4.1.19173.2.2.2.9
+  NAME 'uidNext'
+  DESC 'Object class that includes uidNext for tracking the next uidNumber'
+  SUP top
+  STRUCTURAL
+  MUST ( uidNext $ cn ) )

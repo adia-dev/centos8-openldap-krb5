@@ -1,0 +1,11 @@
+dn: uid={{USERNAME}}{{USER_ID}},ou=People,dc=example,dc=com
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+cn: {{USERNAME}}{{USER_ID}}
+sn: dev
+userPassword: {SSHA}3Hwjp7janEToB7vd887QsNxCERs/o1SQ
+loginShell: /bin/bash
+uidNumber: {{USER_ID}}
+gidNumber: 1000
+homeDirectory: /home/adia
