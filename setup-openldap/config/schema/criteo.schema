@@ -1,0 +1,209 @@
+objectIdentifier criteoOID  1.3.6.1.4.1.15003
+objectIdentifier criteoLDAP criteoOID:1
+objectIdentifier criteoAttributeType criteoLDAP:1
+objectIdentifier criteoObjectClass criteoLDAP:2
+
+
+attributetype ( 2.16.840.1.113730.3.1.692
+        NAME 'inetUserStatus'
+        DESC '"active", "inactive", or "deleted" status of a user'
+        EQUALITY caseIgnoreMatch
+        SINGLE-VALUE SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        X-ORIGIN 'Nortel subscriber interoperability' )
+attributetype ( criteoAttributeType:1
+        NAME 'globalUser'
+        DESC 'The user can see any pub/adv country'
+        EQUALITY booleanMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.7
+        SINGLE-VALUE
+        USAGE userApplications )
+attributetype ( criteoAttributeType:2
+        NAME 'workingCountries'
+        DESC 'List of countries the user is allowed to see the RexT'
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
+        USAGE userApplications )
+attributetype ( criteoAttributeType:3
+        NAME 'publisherPortfolio'
+        DESC 'List of managed publisher account ids'
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+        USAGE userApplications )
+attributetype ( criteoAttributeType:4
+        NAME 'advertiserPortfolio'
+        DESC 'List of managed advertiser account ids'
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+        USAGE userApplications )
+attributetype ( criteoAttributeType:5
+        NAME 'oAuth2SavedConsent'
+        DESC 'Attribute used to store OAuth consents'
+        EQUALITY caseIgnoreMatch
+        ORDERING caseIgnoreOrderingMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        USAGE userApplications )
+attributetype ( criteoAttributeType:6
+        NAME 'directReports'
+        DESC 'directReports field, as from MSAD'
+        EQUALITY distinguishedNameMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.12
+        USAGE userApplications )
+attributetype ( criteoAttributeType:7
+        NAME 'contractStartDate'
+        DESC 'Contract Start Date from HR Systems'
+        EQUALITY generalizedTimeMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
+        SINGLE-VALUE
+        USAGE userApplications )
+attributetype ( criteoAttributeType:8
+        NAME 'contractEndDate'
+        DESC 'Contract End Date from HR Systems'
+        EQUALITY generalizedTimeMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
+        SINGLE-VALUE
+        USAGE userApplications )
+attributetype ( criteoAttributeType:9
+        NAME 'criteoUsername'
+        DESC 'Username login for external applications'
+        EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} X-ORIGIN 'RFC 4519'
+        SINGLE-VALUE
+        USAGE userApplications )
+attributetype ( criteoAttributeType:10
+       NAME 'umsId'
+       DESC 'An integer uniquely an UMS User'
+       EQUALITY integerMatch
+       SINGLE-VALUE SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 )
+attributetype ( criteoAttributeType:11
+       NAME 'umsCreationTime'
+       DESC 'Initial creation time in UMS Database'
+       EQUALITY generalizedTimeMatch
+       ORDERING generalizedTimeOrderingMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
+       SINGLE-VALUE )
+attributetype ( criteoAttributeType:12
+       NAME 'crmContactId'
+       DESC 'UUID of the entry in the CRM' EQUALITY uuidMatch ORDERING uuidOrderingMatch
+       SYNTAX 1.3.6.1.1.16.1 SINGLE-VALUE
+       USAGE userApplications
+       X-ORIGIN 'RFC 4530' )
+attributetype ( criteoAttributeType:13
+       NAME 'ftpLegacyPath'
+       DESC 'Legacy FTP Path'
+       EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch
+       SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} X-ORIGIN 'RFC 4519'
+       SINGLE-VALUE
+       USAGE userApplications )
+attributetype ( criteoAttributeType:14
+       NAME 'userPasswordText'
+       DESC 'User Password'
+       EQUALITY caseExactMatch
+       SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} X-ORIGIN 'RFC 4519'
+       SINGLE-VALUE
+       USAGE userApplications )
+attributetype ( criteoAttributeType:15
+       NAME 'allowedSystems'
+       DESC 'The list of systems this user is able to use'
+       EQUALITY caseExactMatch
+       SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{32} X-ORIGIN 'RFC 4519'
+       USAGE userApplications )
+attributetype ( criteoAttributeType:16
+       NAME 'partnerId'
+       DESC 'Partner ID'
+       EQUALITY integerMatch
+       SINGLE-VALUE SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+       USAGE userApplications )
+attributetype ( criteoAttributeType:17
+       NAME 'partnerReference'
+       DESC 'Reference to a partner'
+       EQUALITY distinguishedNameMatch
+       SINGLE-VALUE SYNTAX 1.3.6.1.4.1.1466.115.121.1.12
+       USAGE userApplications )
+attributetype ( criteoAttributeType:18
+        NAME 'federatedUser'
+        DESC 'The user will use a federated IDP for authentication'
+        EQUALITY booleanMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.7
+        SINGLE-VALUE
+        USAGE userApplications )
+attributetype ( 1.3.6.1.4.1.24552.500.1.1.1.13
+       NAME 'sshPublicKey'
+       DESC 'MANDATORY: OpenSSH Public key'
+       EQUALITY octetStringMatch
+       SYNTAX 1.3.6.1.4.1.1466.115.121.1.40 )
+objectclass ( criteoObjectClass:1
+        NAME 'criteoExternalUser'
+        DESC 'External Users'
+        SUP top
+        AUXILIARY
+            MAY (
+                userPassword
+                $ preferredLanguage
+                $ uid
+                $ givenName
+                $ criteoUsername
+                $ telephoneNumber
+                $ description
+                $ oAuth2SavedConsent
+                $ federatedUser
+            )
+        )
+objectclass ( criteoObjectClass:2
+        NAME 'criteoInternalUser'
+        DESC 'Internal Users with UMS publisher and advertiser rights'
+        SUP top
+        AUXILIARY
+            MAY (
+                directReports
+                $ contractStartDate
+                $ contractEndDate
+                $ globalUser
+                $ workingCountries
+                $ advertiserPortfolio
+                $ publisherPortfolio
+                $ oAuth2SavedConsent
+            )
+        )
+objectclass ( 2.16.840.1.113730.3.2.130
+        NAME 'inetuser'
+        DESC 'Auxiliary class which has to be present in an entry for delivery of subscriber services'
+        SUP top
+        AUXILIARY
+            MAY ( uid $ inetUserStatus $ userPassword )
+            X-ORIGIN 'Nortel subscriber interoperability' )
+objectclass ( criteoObjectClass:3
+       NAME 'criteoUmsUser'
+       DESC 'An UMS User with its ID'
+       SUP top
+       AUXILIARY
+       MUST ( umsId $ mail )
+       MAY ( umsCreationTime $ userPassword) )
+objectclass (criteoObjectClass:4
+       NAME 'crmContact'
+       DESC 'User coming from CRM'
+       SUP top
+       AUXILIARY
+       MUST ( crmContactId ) )
+objectclass ( criteoObjectClass:5
+       NAME 'criteoTechnicalUser'
+       DESC 'Technical User on an account'
+       SUP top
+       STRUCTURAL
+       MUST ( uid )
+       MAY ( userPassword $ userPasswordText $ allowedSystems $ description $ cn) )
+objectclass ( criteoObjectClass:6
+       NAME 'criteoPartnerMember'
+       SUP top
+       AUXILIARY
+       MUST (partnerReference))
+objectclass ( criteoObjectClass:7
+       NAME 'criteoPartner'
+       DESC 'A business Partner'
+       SUP top
+       AUXILIARY
+       MUST ( partnerId $ cn )
+       MAY ( ftpLegacyPath) )
+objectclass ( 1.3.6.1.4.1.24552.500.1.1.2.0
+       NAME 'ldapPublicKey'
+       SUP top
+       AUXILIARY
+       DESC 'MANDATORY: OpenSSH LPK objectclass'
+       MUST uid
+       MAY  sshPublicKey )

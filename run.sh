@@ -4,7 +4,6 @@
 HOSTNAME="example.com"
 PLATFORM="linux/amd64"
 CONTAINER_NAME="centos-openldap-krb5"
-VOLUME_SOURCE="./openldap-data/"
 IMAGE="centos-openldap-krb5"
 ENV_FILE=".env"
 SHOULD_CONNECT=false
@@ -24,11 +23,9 @@ Options:
   --hostname HOSTNAME            Set the hostname for the container. Default: $HOSTNAME
   --platform PLATFORM            Set the platform for the container. Default: $PLATFORM
   --container-name NAME          Set the container name. Default: $CONTAINER_NAME
-  --volume-source DIR            Set the source directory for volume mapping. Default: $VOLUME_SOURCE
   --port PORT_MAPPING            Map container port to host, can be used multiple times for multiple ports.
   --connect                      Attempt to connect to a bash instance in the container after it is running.
   --detach                       Detach the container to run in the background.
-  --ldapadmin                    Run a phpldapadmin container on the side to visualize the ldap directory.
   --build                        Build the container before running it.
   --help, -h                     Print this help message and exit.
 
@@ -54,7 +51,6 @@ while [[ "$#" -gt 0 ]]; do
         --hostname) HOSTNAME="$2"; shift ;;
         --platform) PLATFORM="$2"; shift ;;
         --container-name) CONTAINER_NAME="$2"; shift ;;
-        --volume-source) VOLUME_SOURCE="$2"; shift ;;
         --port) PORT_MAPPINGS+=("-p $2"); shift ;;
         --connect) SHOULD_CONNECT=true ;;
         --detach) DETACH=true ;;
@@ -86,22 +82,11 @@ docker run --rm \
     --privileged=true \
     --env-file="$ENV_FILE" \
     --name "$CONTAINER_NAME" \
-    --volume ./openldap/config:/etc/openldap \
-    --volume ./openldap/database:/var/lib/ldap \
     --volume ./in:/out \
     ${PORT_MAPPING_STR} \
     "$IMAGE" >/dev/null || error_exit "Failed to start container $CONTAINER_NAME."
 
 echo "Container $CONTAINER_NAME is starting..."
-
-# Start ldapadmin container if requested
-if $SHOULD_LAUNCH_LDAPADMIN; then
-    echo "Starting ldapadmin container..."
-    docker run -p 6443:443 \
-        --name ldapadmin \
-        --env PHPLDAPADMIN_LDAP_HOSTS=$(ipconfig getifaddr en0) \
-        --detach osixia/phpldapadmin:0.9.0 >/dev/null || warn "Failed to start ldapadmin container."
-fi
 
 # Attempt to connect to container bash if requested
 if $SHOULD_CONNECT; then

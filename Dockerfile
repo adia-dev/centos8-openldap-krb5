@@ -4,7 +4,7 @@ FROM centos:8
 RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-* && \
     sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
 
-# Add the InfluxData repository for stable packages
+# Add the InfluxData repository to be able to install telegraf
 RUN echo -e "[influxdata]\nname = InfluxData Repository - Stable\nbaseurl = https://repos.influxdata.com/stable/\$basearch/main\nenabled = 1\ngpgcheck = 1\ngpgkey = https://repos.influxdata.com/influxdata-archive_compat.key" > /etc/yum.repos.d/influxdata.repo
 
 RUN dnf update -y && \
@@ -28,13 +28,13 @@ RUN dnf install -y \
     telegraf && \
     dnf clean all -y
 
-COPY ./openldap-data /srv/openldap
-COPY ./telegraf /srv/telegraf
-
-# Expose necessary ports for LDAP, Kerberos and other services
-EXPOSE 88 464 389 636 22 9273
-
+COPY ./setup-openldap /setup-openldap
+COPY ./telegraf /var/lib/telegraf/
 COPY ./entrypoint.sh /entrypoint.sh
+
 RUN chmod +x /entrypoint.sh
+
+# Expose necessary ports for LDAP and telegraf
+EXPOSE 389 9273
 
 ENTRYPOINT ["/entrypoint.sh"]

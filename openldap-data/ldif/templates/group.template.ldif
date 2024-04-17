@@ -1,4 +1,0 @@
-dn: cn={{GROUP_NAME}},ou=Groups,{{SLAPD_DOMAIN}}
-objectClass: posixGroup
-cn: {{GROUP_NAME}}
-gidNumber: {{GROUP_ID}}
