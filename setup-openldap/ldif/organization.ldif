@@ -1,0 +1,39 @@
+dn: dc=example,dc=com
+objectClass: top
+objectClass: dcObject
+objectclass: organization
+o: Example
+dc: example
+
+dn: cn=admin,dc=example,dc=com
+objectClass: organizationalRole
+cn: admin
+description: Directory Admin
+
+dn: ou=people,dc=example,dc=com
+objectClass: organizationalUnit
+ou: People
+
+dn: ou=internal,ou=people,dc=example,dc=com
+objectClass: organizationalUnit
+ou: Internal people
+
+dn: ou=external,ou=people,dc=example,dc=com
+objectClass: organizationalUnit
+ou: External people
+
+dn: ou=api,ou=people,dc=example,dc=com
+objectClass: organizationalUnit
+ou: Apis
+
+dn: ou=business,dc=example,dc=com
+objectClass: organizationalUnit
+ou: Business
+
+dn: ou=partners,ou=business,dc=example,dc=com
+objectClass: organizationalUnit
+ou: Business partners
+
+dn: ou=services,dc=example,dc=com
+objectClass: organizationalUnit
+ou: Services
