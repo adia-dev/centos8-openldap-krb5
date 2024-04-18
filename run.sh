@@ -5,11 +5,12 @@ HOSTNAME="example.com"
 PLATFORM="linux/amd64"
 CONTAINER_NAME="centos-openldap-krb5"
 IMAGE="centos-openldap-krb5"
+DOCKERFILE="Dockerfile"
 ENV_FILE=".env"
+TYPE="server"
 SHOULD_CONNECT=false
 SHOULD_BUILD=false
 DETACH=false
-SHOULD_LAUNCH_LDAPADMIN=false
 RETRY_INTERVAL=5
 MAX_RETRIES=5
 PORT_MAPPINGS=()
@@ -27,6 +28,7 @@ Options:
   --connect                      Attempt to connect to a bash instance in the container after it is running.
   --detach                       Detach the container to run in the background.
   --build                        Build the container before running it.
+  --client                       <client|server> run either a client or a server
   --help, -h                     Print this help message and exit.
 
 Example:
@@ -54,8 +56,13 @@ while [[ "$#" -gt 0 ]]; do
         --port) PORT_MAPPINGS+=("-p $2"); shift ;;
         --connect) SHOULD_CONNECT=true ;;
         --detach) DETACH=true ;;
+        --client) 
+            TYPE="client"
+            CONTAINER_NAME="centos-openldap-client" 
+            DOCKERFILE="client.Dockerfile"
+            IMAGE="centos-openldap-client"
+            ;;
         --build) SHOULD_BUILD=true ;;
-        --ldapadmin) SHOULD_LAUNCH_LDAPADMIN=true ;;
         -h|--help) print_help; exit 0 ;;
         *) error_exit "Unknown parameter passed: $1" ;;
     esac
@@ -71,20 +78,35 @@ docker stop $CONTAINER_NAME >/dev/null 2>&1 || warn "Failed to stop container $C
 
 if $SHOULD_BUILD; then
     echo "Building the container..."
-    docker build -t centos-openldap-krb5 --platform=linux/amd64 . >/dev/null || error_exit "Failed to build the container."
+    docker build -t $CONTAINER_NAME --platform=$PLATFORM . -f $DOCKERFILE >/dev/null || error_exit "Failed to build the container."
 fi
 
 echo "Starting container $CONTAINER_NAME..."
-docker run --rm \
-    --detach=$DETACH \
-    -h "$HOSTNAME" \
-    --platform="$PLATFORM" \
-    --privileged=true \
-    --env-file="$ENV_FILE" \
-    --name "$CONTAINER_NAME" \
-    --volume ./in:/out \
-    ${PORT_MAPPING_STR} \
-    "$IMAGE" >/dev/null || error_exit "Failed to start container $CONTAINER_NAME."
+case $TYPE in
+    "client") 
+        docker run --rm \
+            --detach=$DETACH \
+            --platform="$PLATFORM" \
+            --privileged=true \
+            --env-file="$ENV_FILE" \
+            --name "$CONTAINER_NAME" \
+            --volume ./in:/out \
+            "$IMAGE" >/dev/null || error_exit "Failed to start container $CONTAINER_NAME."
+        ;;
+    "server") 
+        docker run --rm \
+            --detach=$DETACH \
+            -h "$HOSTNAME" \
+            --platform="$PLATFORM" \
+            --privileged=true \
+            --env-file="$ENV_FILE" \
+            --name "$CONTAINER_NAME" \
+            --volume ./in:/out \
+            ${PORT_MAPPING_STR} \
+            "$IMAGE" >/dev/null || error_exit "Failed to start container $CONTAINER_NAME."
+        ;;
+    *) error_exit "Unknown type passed: $TYPE" ;;
+esac
 
 echo "Container $CONTAINER_NAME is starting..."
 
