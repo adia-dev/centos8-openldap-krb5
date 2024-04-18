@@ -1,6 +1,6 @@
 dn: olcDatabase={2}mdb,cn=config
 add: olcDbIndex
-olcDbIndex: umsId eq,sub
+olcDbIndex: umsId eq
 -
 add: olcDbIndex
 olcDbIndex: criteoUsername eq,sub

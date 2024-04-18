@@ -39,8 +39,14 @@ prepare_ldap_environment() {
     log "Copying DB_CONFIG to /var/lib/ldap..."
     cp /setup-openldap/database/DB_CONFIG /var/lib/ldap/DB_CONFIG
 
+    log "Copying tls certs to /etc/openldap/certs..."
+    cp /setup-openldap/certs/* /etc/openldap/certs
+
+    log "Copying ldap.conf /etc/openldap/..."
+    cp /setup-openldap/config/ldap.conf /etc/openldap/
+
     log "Changing ownership of /var/lib/ldap and /setup-openldap to ldap:ldap..."
-    chown -R ldap:ldap /var/lib/ldap/ /setup-openldap/
+    chown -R ldap:ldap /var/lib/ldap/ /etc/openldap/certs/ /setup-openldap/
 }
 
 add_ldap_schemas() {
@@ -57,14 +63,17 @@ update_ldap_config() {
     log "Setting up logging"
     ldap_modify /setup-openldap/ldif/logging.ldif
 
-    # log "Setting up db indexes"
-    # ldap_modify -Q -Y EXTERNAL -H ldapi:/// -f /setup-openldap/ldif/db_index.ldif
+    log "Setting up db indexes"
+    ldap_modify /setup-openldap/ldif/db_index.ldif
 
     log "Setting up root pw..."
     ldap_modify /setup-openldap/ldif/ch_root_pw.ldif
 
     log "Setting up domain..."
     ldap_modify /setup-openldap/ldif/ch_domain.ldif
+
+    log "Setting up tls..."
+    ldap_modify /setup-openldap/ldif/ch_tls.ldif
 
     log "Setting up organization..."
     ldap_add_binded /setup-openldap/ldif/organization.ldif
