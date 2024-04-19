@@ -47,6 +47,7 @@ prepare_ldap_environment() {
 
     log "Changing ownership of /var/lib/ldap and /setup-openldap to ldap:ldap..."
     chown -R ldap:ldap /var/lib/ldap/ /etc/openldap/certs/ /setup-openldap/
+    chmod 0640 /etc/openldap/certs/server.key
 }
 
 add_ldap_schemas() {
@@ -72,11 +73,24 @@ update_ldap_config() {
     log "Setting up domain..."
     ldap_modify /setup-openldap/ldif/ch_domain.ldif
 
+    log "Setting up organization..."
+    ldap_add_binded /setup-openldap/ldif/organization.ldif
+}
+
+enable_tls() {
     log "Setting up tls..."
     ldap_modify /setup-openldap/ldif/ch_tls.ldif
 
-    log "Setting up organization..."
-    ldap_add_binded /setup-openldap/ldif/organization.ldif
+    # Check TLS
+    ldapwhoami -x -ZZ -H ldap://example.com
+    log "TLS is enabled"
+}
+
+enable_logging() {
+    log "Activating openldap rsyslog..."
+    echo "local4.*    /var/log/slapd.log" >> /etc/rsyslog.conf
+    systemctl restart rsyslog
+    log "Restarting rsyslog daemon..."
 }
 
 restart_slapd() {
@@ -90,7 +104,11 @@ main() {
     prepare_ldap_environment
     add_ldap_schemas
     update_ldap_config
+    enable_logging
+    enable_tls
     restart_slapd
+
+    tail --retry --follow=name /var/log/slapd.log &
 }
 
 main

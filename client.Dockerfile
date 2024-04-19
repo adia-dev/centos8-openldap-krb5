@@ -15,9 +15,15 @@ RUN dnf install -y \
     openldap-clients \
     sssd \
     sssd-ldap \
+    authselect \
     oddjob-mkhomedir \
     vim \
     ncurses && \
     dnf clean all -y
 
-ENTRYPOINT ["tail", "-f", "/dev/null"]
+COPY ./setup-openldap-client /setup-openldap-client
+COPY ./client.entrypoint.sh /entrypoint.sh
+
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
