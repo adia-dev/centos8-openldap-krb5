@@ -37,3 +37,7 @@ ou: Business partners
 dn: ou=services,dc=example,dc=com
 objectClass: organizationalUnit
 ou: Services
+
+dn: ou=unix,ou=services,dc=example,dc=com
+objectClass: organizationalUnit
+ou: Unix services accounts

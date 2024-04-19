@@ -1,0 +1,281 @@
+dn: uid=operator,ou=unix,ou=services,dc=example,dc=com
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+sn: operator
+givenName: operator
+cn: operator
+displayName: operator
+uidNumber: 11
+gidNumber: 0
+userPassword: {crypt}*
+gecos: operator
+loginShell: /sbin/nologin
+homeDirectory: /root
+shadowExpire: -1
+shadowFlag: 0
+shadowWarning: 7
+shadowMin: 0
+shadowMax: 99999
+shadowLastChange: 18397
+
+dn: uid=games,ou=unix,ou=services,dc=example,dc=com
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+sn: games
+givenName: games
+cn: games
+displayName: games
+uidNumber: 12
+gidNumber: 100
+userPassword: {crypt}*
+gecos: games
+loginShell: /sbin/nologin
+homeDirectory: /usr/games
+shadowExpire: -1
+shadowFlag: 0
+shadowWarning: 7
+shadowMin: 0
+shadowMax: 99999
+shadowLastChange: 18397
+
+dn: uid=ftp,ou=unix,ou=services,dc=example,dc=com
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+sn: User
+givenName: FTP
+cn: FTP User
+displayName: FTP User
+uidNumber: 14
+gidNumber: 50
+userPassword: {crypt}*
+gecos: FTP User
+loginShell: /sbin/nologin
+homeDirectory: /var/ftp
+shadowExpire: -1
+shadowFlag: 0
+shadowWarning: 7
+shadowMin: 0
+shadowMax: 99999
+shadowLastChange: 18397
+
+dn: uid=nobody,ou=unix,ou=services,dc=example,dc=com
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+sn: Overflow
+givenName: Kernel
+cn: Kernel Overflow
+displayName: Kernel Overflow
+uidNumber: 65534
+gidNumber: 65534
+userPassword: {crypt}*
+gecos: Kernel Overflow
+loginShell: /sbin/nologin
+homeDirectory: /
+shadowExpire: -1
+shadowFlag: 0
+shadowWarning: 7
+shadowMin: 0
+shadowMax: 99999
+shadowLastChange: 18397
+
+dn: uid=dbus,ou=unix,ou=services,dc=example,dc=com
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+sn: message
+givenName: System
+cn: System message
+displayName: System message
+uidNumber: 81
+gidNumber: 81
+userPassword: {crypt}!!
+gecos: System message
+loginShell: /sbin/nologin
+homeDirectory: /
+shadowExpire: -1
+shadowFlag: 0
+shadowWarning: -1
+shadowMin: -1
+shadowMax: -1
+shadowLastChange: 18885
+
+dn: uid=systemd-coredump,ou=unix,ou=services,dc=example,dc=com
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+sn: Core
+givenName: systemd
+cn: systemd Core
+displayName: systemd Core
+uidNumber: 999
+gidNumber: 997
+userPassword: {crypt}!!
+gecos: systemd Core
+loginShell: /sbin/nologin
+homeDirectory: /
+shadowExpire: -1
+shadowFlag: 0
+shadowWarning: -1
+shadowMin: -1
+shadowMax: -1
+shadowLastChange: 18885
+
+dn: uid=systemd-resolve,ou=unix,ou=services,dc=example,dc=com
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+sn: Resolver
+givenName: systemd
+cn: systemd Resolver
+displayName: systemd Resolver
+uidNumber: 193
+gidNumber: 193
+userPassword: {crypt}!!
+gecos: systemd Resolver
+loginShell: /sbin/nologin
+homeDirectory: /
+shadowExpire: -1
+shadowFlag: 0
+shadowWarning: -1
+shadowMin: -1
+shadowMax: -1
+shadowLastChange: 18885
+
+dn: uid=tss,ou=unix,ou=services,dc=example,dc=com
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+sn: used
+givenName: Account
+cn: Account used
+displayName: Account used
+uidNumber: 59
+gidNumber: 59
+userPassword: {crypt}!!
+gecos: Account used
+loginShell: /sbin/nologin
+homeDirectory: /dev/null
+shadowExpire: -1
+shadowFlag: 0
+shadowWarning: -1
+shadowMin: -1
+shadowMax: -1
+shadowLastChange: 19829
+
+dn: uid=unbound,ou=unix,ou=services,dc=example,dc=com
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+sn: DNS
+givenName: Unbound
+cn: Unbound DNS
+displayName: Unbound DNS
+uidNumber: 998
+gidNumber: 996
+userPassword: {crypt}!!
+gecos: Unbound DNS
+loginShell: /sbin/nologin
+homeDirectory: /etc/unbound
+shadowExpire: -1
+shadowFlag: 0
+shadowWarning: -1
+shadowMin: -1
+shadowMax: -1
+shadowLastChange: 19829
+
+dn: uid=ldap,ou=unix,ou=services,dc=example,dc=com
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+sn: server
+givenName: OpenLDAP
+cn: OpenLDAP server
+displayName: OpenLDAP server
+uidNumber: 55
+gidNumber: 55
+userPassword: {crypt}!!
+gecos: OpenLDAP server
+loginShell: /sbin/nologin
+homeDirectory: /var/lib/ldap
+shadowExpire: -1
+shadowFlag: 0
+shadowWarning: -1
+shadowMin: -1
+shadowMax: -1
+shadowLastChange: 19832
+
+dn: uid=telegraf,ou=unix,ou=services,dc=example,dc=com
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+sn: telegraf
+givenName: telegraf
+cn: telegraf
+displayName: telegraf
+uidNumber: 997
+gidNumber: 995
+userPassword: {crypt}!!
+gecos: telegraf
+loginShell: /bin/false
+homeDirectory: /etc/telegraf
+shadowExpire: -1
+shadowFlag: 0
+shadowWarning: -1
+shadowMin: -1
+shadowMax: -1
+shadowLastChange: 19832
+
+dn: cn=root,ou=unix,ou=services,dc=example,dc=com
+objectClass: posixGroup
+cn: root
+gidNumber: 0
+
+dn: cn=users,ou=unix,ou=services,dc=example,dc=com
+objectClass: posixGroup
+cn: users
+gidNumber: 100
+
+dn: cn=ftp,ou=unix,ou=services,dc=example,dc=com
+objectClass: posixGroup
+cn: ftp
+gidNumber: 50
+
+dn: cn=nobody,ou=unix,ou=services,dc=example,dc=com
+objectClass: posixGroup
+cn: nobody
+gidNumber: 65534
+
+dn: cn=dbus,ou=unix,ou=services,dc=example,dc=com
+objectClass: posixGroup
+cn: dbus
+gidNumber: 81
+
+dn: cn=systemd-coredump,ou=unix,ou=services,dc=example,dc=com
+objectClass: posixGroup
+cn: systemd-coredump
+gidNumber: 997
+
+dn: cn=systemd-resolve,ou=unix,ou=services,dc=example,dc=com
+objectClass: posixGroup
+cn: systemd-resolve
+gidNumber: 193
+
+dn: cn=tss,ou=unix,ou=services,dc=example,dc=com
+objectClass: posixGroup
+cn: tss
+gidNumber: 59
+
+dn: cn=unbound,ou=unix,ou=services,dc=example,dc=com
+objectClass: posixGroup
+cn: unbound
+gidNumber: 996
+
+dn: cn=telegraf,ou=unix,ou=services,dc=example,dc=com
+objectClass: posixGroup
+cn: telegraf
+gidNumber: 995
+

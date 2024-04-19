@@ -22,6 +22,7 @@ RUN dnf install -y \
     krb5-server-ldap \
     krb5-workstation \
     firewalld \
+    passwd \
     rsyslog \
     vim \
     ncurses \

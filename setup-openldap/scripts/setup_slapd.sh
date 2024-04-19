@@ -75,6 +75,11 @@ update_ldap_config() {
 
     log "Setting up organization..."
     ldap_add_binded /setup-openldap/ldif/organization.ldif
+
+    log "Add unix groups and users..."
+    /setup-openldap/scripts/register_unix_users.sh
+    cp /setup-openldap/ldif/unix_users.ldif /out # backup
+    ldap_add_binded /setup-openldap/ldif/unix_users.ldif
 }
 
 enable_tls() {

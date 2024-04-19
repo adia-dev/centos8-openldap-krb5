@@ -16,6 +16,7 @@ RUN dnf install -y \
     sssd \
     sssd-ldap \
     authselect \
+    passwd \
     oddjob-mkhomedir \
     vim \
     ncurses && \
