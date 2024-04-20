@@ -4,3 +4,9 @@ olcDbIndex: umsId eq
 -
 add: olcDbIndex
 olcDbIndex: criteoUsername eq,sub
+-
+add: olcDbIndex
+olcDbIndex: uid eq,sub
+-
+add: olcDbIndex
+olcDbIndex: uidNumber,gidNumber eq

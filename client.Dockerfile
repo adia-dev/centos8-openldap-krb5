@@ -17,7 +17,10 @@ RUN dnf install -y \
     sssd-ldap \
     authselect \
     passwd \
+    nss-pam-ldapd \
     oddjob-mkhomedir \
+    openssh-server \
+    openssh-clients \
     vim \
     ncurses && \
     dnf clean all -y

@@ -72,7 +72,9 @@ update_ldap_config() {
 
     log "Setting up domain..."
     ldap_modify /setup-openldap/ldif/ch_domain.ldif
+}
 
+populate_ldap() {
     log "Setting up organization..."
     ldap_add_binded /setup-openldap/ldif/organization.ldif
 
@@ -111,6 +113,7 @@ main() {
     update_ldap_config
     enable_logging
     enable_tls
+    populate_ldap
     restart_slapd
 
     tail --retry --follow=name /var/log/slapd.log &

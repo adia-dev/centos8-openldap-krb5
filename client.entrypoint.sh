@@ -1,33 +1,65 @@
 #!/bin/bash
 
-# Use 'set -e' to exit the script when a command fails
 set -e
 
-# Use 'trap' to capture EXIT signals and handle errors
 trap 'error_handler' ERR
 
-# Function to handle errors
+export LDAP_SERVER_HOST="172.17.0.3"
+export LDAP_SERVER_HOSTNAME="ldap.example.com"
+
 error_handler() {
     echo "[ERROR] An error occurred during LDAP setup." >&2
-    # Here you can add additional logging or error notification mechanisms
     exit 1
 }
 
-# Set up OpenLDAP services
+add_ldap_server_host() {
+    echo "Adding LDAP server host to /etc/hosts ($LDAP_SERVER_HOST)..."
+
+    echo "$LDAP_SERVER_HOST     $LDAP_SERVER_HOSTNAME" >> /etc/hosts
+
+    echo "LDAP server host added to /etc/hosts."
+}
+
+setup_sshd() {
+    echo "Setting up sshd services..."
+
+    systemctl restart sshd
+    systemctl enable sshd
+
+    echo "sshd is enabled."
+}
+
 setup_sssd() {
     echo "Setting up sssd services..."
     authselect select sssd with-mkhomedir --force
-    cp /setup-openldap-client/sssd/sssd.conf /etc/sssd/sssd.conf
+    cp /setup-openldap-client/config/sssd/sssd.conf /etc/sssd/sssd.conf
+    cp /setup-openldap-client/config/sssd/nslcd.conf /etc/nslcd.conf
     chmod 600 /etc/sssd/sssd.conf
+    chmod 600 /etc/nslcd.conf
 
-    systemctl restart sssd oddjobd
-    systemctl enable sssd oddjobd
+    systemctl restart sssd oddjobd nslcd
+    systemctl enable sssd oddjobd nslcd
+
+    cp -Rp /usr/share/authselect/default/sssd /etc/authselect/custom/nslcd
+    cd /etc/authselect/custom/nslcd
+    sed -i 's/sss/ldap/g' fingerprint-auth
+    sed -i 's/sss/ldap/g' password-auth
+    sed -i 's/sss/ldap/g' smartcard-auth
+    sed -i 's/sss/ldap/g' system-auth
+    sed -i 's/sss/ldap/g' nsswitch.conf
+    sed -i 's/SSSD/NSLCD/g' REQUIREMENTS
+
+    authselect select custom/nslcd --force
+
+    echo "SSSD is enabled."
 }
 
 main() {
     echo "Starting setup process..."
 
+    add_ldap_server_host
     setup_sssd
+    setup_sshd
 
     echo "System is ready."
 }
