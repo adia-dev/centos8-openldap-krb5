@@ -3,8 +3,8 @@
 # Default configuration
 HOSTNAME="example.com"
 PLATFORM="linux/amd64"
-CONTAINER_NAME="centos-openldap-krb5"
-IMAGE="centos-openldap-krb5"
+CONTAINER_NAME="centos-openldap-server"
+IMAGE="centos-openldap-server"
 DOCKERFILE="Dockerfile"
 ENV_FILE=".env"
 TYPE="server"
@@ -23,7 +23,7 @@ Usage: $0 [OPTIONS]
 Options:
   --hostname HOSTNAME            Set the hostname for the container. Default: $HOSTNAME
   --platform PLATFORM            Set the platform for the container. Default: $PLATFORM
-  --container-name NAME          Set the container name. Default: $CONTAINER_NAME
+  --name NAME          Set the container name. Default: $CONTAINER_NAME
   --port PORT_MAPPING            Map container port to host, can be used multiple times for multiple ports.
   --connect                      Attempt to connect to a bash instance in the container after it is running.
   --detach                       Detach the container to run in the background.
@@ -32,7 +32,7 @@ Options:
   --help, -h                     Print this help message and exit.
 
 Example:
-  $0 --hostname mycustomhost.com --platform linux/arm64 --container-name my-ldap-client --volume-source ./custom-data/ --port 8080:80 --port 389:389 --connect
+  $0 --hostname mycustomhost.com --platform linux/arm64 --name my-ldap-client --volume-source ./custom-data/ --port 8080:80 --port 389:389 --connect
 
 This script runs a Docker container with OpenLDAP and Kerberos configuration.
 EOF
@@ -52,7 +52,7 @@ while [[ "$#" -gt 0 ]]; do
     case $1 in
         --hostname) HOSTNAME="$2"; shift ;;
         --platform) PLATFORM="$2"; shift ;;
-        --container-name) CONTAINER_NAME="$2"; shift ;;
+        --name) CONTAINER_NAME="$2"; shift ;;
         --port) PORT_MAPPINGS+=("-p $2"); shift ;;
         --connect) SHOULD_CONNECT=true ;;
         --detach) DETACH=true ;;
@@ -90,7 +90,8 @@ case $TYPE in
             --privileged=true \
             --env-file="$ENV_FILE" \
             --name "$CONTAINER_NAME" \
-            --volume ./in:/out \
+            --volume ./in:/in \
+            --volume ./out:/out \
             "$IMAGE" >/dev/null || error_exit "Failed to start container $CONTAINER_NAME."
         ;;
     "server") 
@@ -101,7 +102,9 @@ case $TYPE in
             --privileged=true \
             --env-file="$ENV_FILE" \
             --name "$CONTAINER_NAME" \
-            --volume ./in:/out \
+            --volume ./backup:/backup \
+            --volume ./in:/in \
+            --volume ./out:/out \
             ${PORT_MAPPING_STR} \
             "$IMAGE" >/dev/null || error_exit "Failed to start container $CONTAINER_NAME."
         ;;

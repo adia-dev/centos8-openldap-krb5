@@ -29,6 +29,10 @@ RUN dnf install -y \
     telegraf && \
     dnf clean all -y
 
+# Install ldapscripts
+RUN curl -o ldapscripts.rpm https://rpmfind.net/linux/openmandriva/cooker/repository/x86_64/unsupported/release/ldapscripts-2.0.8-1-omv4002.noarch.rpm && \
+    dnf localinstall -y ldapscripts.rpm
+
 COPY ./setup-openldap /setup-openldap
 COPY ./telegraf /var/lib/telegraf/
 COPY ./entrypoint.sh /entrypoint.sh

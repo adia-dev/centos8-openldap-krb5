@@ -10,3 +10,6 @@ olcDbIndex: uid eq,sub
 -
 add: olcDbIndex
 olcDbIndex: uidNumber,gidNumber eq
+-
+add: olcDbIndex
+olcDbIndex: entryCSN,entryUUID eq

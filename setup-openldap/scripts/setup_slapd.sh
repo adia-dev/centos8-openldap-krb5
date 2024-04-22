@@ -93,6 +93,27 @@ enable_tls() {
     log "TLS is enabled"
 }
 
+setup_multi_master_replication() {
+    log "Setting up multi master replication..."
+    ldap_add_binded /setup-openldap/ldif/replicator.ldif
+    ldap_add /setup-openldap/ldif/replicator_acl.ldif
+
+    ldap_add /setup-openldap/ldif/enable_syncprov.ldif
+    ldap_add /setup-openldap/ldif/syncprov.ldif
+    # ldap_add /setup-openldap/ldif/syncprov_server_ids.ldif
+    # ldap_add /setup-openldap/ldif/syncprov_master.ldif
+
+    # Check TLS
+    ldapwhoami -x -ZZ -H ldap://example.com
+    log "Multi master replication is enabled"
+}
+
+setup_ldapscripts() {
+    log "Setting up ldapscripts..."
+    cp -r /setup-openldap/config/ldapscripts/* /etc/ldapscripts/
+    log "ldapscripts is ready to use"
+}
+
 enable_logging() {
     log "Activating openldap rsyslog..."
     echo "local4.*    /var/log/slapd.log" >> /etc/rsyslog.conf
@@ -114,6 +135,8 @@ main() {
     enable_logging
     enable_tls
     populate_ldap
+    setup_multi_master_replication
+    setup_ldapscripts
     restart_slapd
 
     tail --retry --follow=name /var/log/slapd.log &

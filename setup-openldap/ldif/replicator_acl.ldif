@@ -1,0 +1,11 @@
+dn: olcDatabase={2}mdb,cn=config
+changetype: modify
+add: olcAccess
+olcAccess: {0}to *
+  by dn.exact="cn=replicator,dc=example,dc=com" read
+  by * break
+-
+add: olcLimits
+olcLimits: dn.exact="cn=replicator,dc=example,dc=com"
+  time.soft=unlimited time.hard=unlimited
+  size.soft=unlimited size.hard=unlimited

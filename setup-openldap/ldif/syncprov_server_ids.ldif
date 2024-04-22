@@ -1,0 +1,7 @@
+dn: cn=config
+changetype: modify
+add: olcServerId
+olcServerId: 1 ldap://ldap01.example.com:389
+-
+add: olcServerId
+olcServerId: 2 ldap://ldap02.example.com:389

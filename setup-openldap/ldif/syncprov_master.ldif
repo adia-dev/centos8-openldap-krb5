@@ -1,0 +1,17 @@
+dn: olcDatabase={2}mdb,cn=config
+changetype: modify
+add: olcSyncRepl
+olcSyncRepl: rid=001
+  provider=ldap://ldap01.example.com:389/
+  bindmethod=simple
+  binddn="cn=replicator,ou=services,dc=example,dc=com"
+  credentials=Respons11
+  searchbase="dc=example,dc=com"
+  scope=sub
+  schemachecking=on
+  type=refreshAndPersist
+  retry="30 5 300 3"
+  interval=00:00:05:00
+-
+add: olcMirrorMode
+olcMirrorMode: TRUE

@@ -1,0 +1,24 @@
+dn: cn=config
+changetype: modify
+replace: olcServerID
+olcServerID: 1 ldap://ldap01.example.com
+olcServerID: 2 ldap://ldap02.example.com
+
+dn: olcOverlay=syncprov,olcDatabase={0}config,cn=config
+changetype: add
+objectClass: olcOverlayConfig
+objectClass: olcSyncProvConfig
+olcOverlay: syncprov
+
+dn: olcDatabase={0}config,cn=config
+changetype: modify
+add: olcSyncRepl
+olcSyncRepl: rid=001 provider=ldap://ldap01.example.com/g binddn="cn=config" bindmethod=simple
+  credentials=Respons11 searchbase="cn=config" type=refreshAndPersist
+  retry="5 5 300 5" timeout=1
+olcSyncRepl: rid=002 provider=ldap://ldap02.example.com/g binddn="cn=config" bindmethod=simple
+  credentials=Respons11 searchbase="cn=config" type=refreshAndPersist
+  retry="5 5 300 5" timeout=1
+-
+add: olcMirrorMode
+olcMirrorMode: TRUE
